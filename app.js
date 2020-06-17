@@ -8,7 +8,7 @@ GAME RULES:
 - The first player to reach 100 points on GLOBAL score wins the game
 
 */
-var scores, activePlayer, roundScore;
+var scores, activePlayer, roundScore, gameChanger;
 
 
 init();
@@ -21,7 +21,8 @@ init();
 
 
 document.querySelector('.btn-roll').addEventListener('click',function(){
-    // random numb
+    if(gameChanger){
+        // random numb
     var dice = Math.floor(Math.random()*6)+1;
 
     // display the result
@@ -38,26 +39,28 @@ document.querySelector('.btn-roll').addEventListener('click',function(){
     else{
         nextPlayer();
          }
+    }
+    
 });
 
 document.querySelector('.btn-hold').addEventListener('click',function(){
-    //add to current player
+    if(gameChanger){
+        //add to current player
     scores[activePlayer] += roundScore;
     //update ui
     document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
     //check winner
-    if (scores[activePlayer]>=20){
+    if (scores[activePlayer]>=30){
         document.querySelector('#name-' + activePlayer).textContent = 'winner';
         document.querySelector('.dice').style.display='none';
         document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
         document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
-
+        gameChanger=false;
     }else{
         //next
     nextPlayer();  
     }
-
-    
+    }
 });
 
 function nextPlayer(){
@@ -81,6 +84,7 @@ function init(){
     scores=[0,0];
 roundScore=0;
 activePlayer=0;
+gameChanger=true;
 
 document.querySelector('.dice').style.display='none';
 
